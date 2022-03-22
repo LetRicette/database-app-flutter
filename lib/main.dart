@@ -36,16 +36,41 @@ class _HomeState extends State<Home> {
   _salvar() async {
     Database bd = await _recuperarBancodeDados();
     Map<String, dynamic> dadosUsuario = {
-      "nome": "Gaboel",
-      "idade": 33,
+      "nome": "Robita bita",
+      "idade": 89,
     };
     int id = await bd.insert("usuarios", dadosUsuario);
     print("Salvo: $id ");
   }
 
+  _listarUsuarios() async {
+    Database bd = await _recuperarBancodeDados();
+    // String sql = "SELECT * FROM usuarios WHERE idade = 29 ";
+    //String sql = "SELECT * FROM usuarios WHERE idade >= 29 AND idade <=46";
+    //String sql = "SELECT * FROM usuarios WHERE idade BETWEEN 29 AND 46";
+    //String sql = "SELECT * FROM usuarios WHERE idade IN (29,46)";
+    //String sql = "SELECT * FROM usuarios WHERE nome LIKE 'Let%' ";
+    //String sql = "SELECT * FROM usuarios WHERE nome LIKE '%tíci%' ";
+    // String sql =
+    // "SELECT * FROM usuarios WHERE 1=1 ORDER BY UPPER(nome) ASC "; // ascendente
+    String sql =
+        "SELECT * FROM usuarios WHERE 1=1 ORDER BY UPPER(nome) DESC "; //desc
+    List usuarios = await bd.rawQuery(sql);
+    //print('usuarios: ' + usuarios.toString());
+    for (var usuario in usuarios) {
+      print("item id: " +
+          usuario['id'].toString() +
+          " nome: " +
+          usuario['nome'] +
+          " idade: " +
+          usuario['idade'].toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    _salvar();
+    // _salvar();
+    _listarUsuarios();
     return Container();
   }
 }
