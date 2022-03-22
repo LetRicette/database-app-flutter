@@ -67,10 +67,57 @@ class _HomeState extends State<Home> {
     }
   }
 
+  //CRUD -> Create, Read, Update and Delete
+  _recuperarUsuarioPeloId(int id) async {
+    Database bd = await _recuperarBancodeDados();
+    List usuarios = await bd.query(
+      "usuarios",
+      columns: ['id', 'nome', 'idade'],
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    for (var usuario in usuarios) {
+      print("item id: " +
+          usuario['id'].toString() +
+          " nome: " +
+          usuario['nome'] +
+          " idade: " +
+          usuario['idade'].toString());
+    }
+  }
+
+  _excluirUsuario(int id) async {
+    Database bd = await _recuperarBancodeDados();
+    bd.delete(
+      "usuarios",
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  _atualizarUsuario(int id) async {
+    Database bd = await _recuperarBancodeDados();
+    Map<String, dynamic> dadosUsuario = {
+      "nome": "Pato pato bato",
+      "idade": 2,
+    };
+    bd.update(
+      'usuarios',
+      dadosUsuario,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // _salvar();
-    _listarUsuarios();
+    //_listarUsuarios();
+    //_recuperarUsuarioPeloId(1);
+    //_excluirUsuario(3);
+    // _atualizarUsuario(4);
+    // _listarUsuarios();
+
     return Container();
   }
 }
